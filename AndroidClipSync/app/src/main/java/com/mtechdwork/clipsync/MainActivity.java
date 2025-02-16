@@ -1,6 +1,8 @@
 package com.mtechdwork.clipsync;
 
+import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,10 +20,23 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    boolean debug = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // For Android API < 29
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboardManager.addPrimaryClipChangedListener(() -> {
+            if (debug) Log.i("[Clipboard Manager]", "CLIPBOARD CHANGED");
+            ClipData clipData = clipboardManager.getPrimaryClip();
+            if (clipData != null) {
+                String clipText = String.valueOf(clipData.getItemAt(0).getText());
+                if (debug) Log.i("[Clipboard Manager]", "Clipboard changed: " + clipText);
+            }
+        });
 
         // Kiểm tra xem ứng dụng có quyền truy cập Accessibility chưa
         if (isAccessibilityServiceEnabled()) {

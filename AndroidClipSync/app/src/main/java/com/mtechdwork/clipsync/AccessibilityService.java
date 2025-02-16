@@ -1,11 +1,14 @@
 package com.mtechdwork.clipsync;
 
+import android.content.Intent;
+import android.os.Build;
 import android.view.accessibility.AccessibilityEvent;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.List;
 import java.util.Objects;
 
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
@@ -21,26 +24,14 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     }
 
     private void onClipboardChanged() {
-        if (debug) Log.i("[Accessibility Service]", "Clipboard changed: " + selectedText);
+//        if (debug) Log.i("[Accessibility Service]", "Clipboard changed: " + selectedText);
+        Intent intent = new Intent(this, TestActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
-    @Override
-    public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
-        try {
-            if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED) {
-
-                final int selectBegin = Objects.requireNonNull(accessibilityEvent.getSource()).getTextSelectionStart();
-                final int selectEnd = Objects.requireNonNull(accessibilityEvent.getSource()).getTextSelectionEnd();
-                if (selectBegin == selectEnd) return;
-
-                selectedText = getEventText(accessibilityEvent).substring(selectBegin, selectEnd);
-                if (debug) {
-                    Log.i("[Accessibility Service]", "Text: " + selectedText);
-                    Log.i("[Accessibility Service]", "Select begin: " + selectBegin);
-                    Log.i("[Accessibility Service]", "Select end: " + selectEnd);
-                }
-
-//            if (!selectedText.isEmpty()) {
+    private void writeClipboard(String text) {
+//        if (!text.isEmpty()) {
 //                // Ghi vào Clipboard
 //                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 //                ClipData clip = ClipData.newPlainText("Copied Text", selectedText);
@@ -48,21 +39,47 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 //
 //                Log.d("Accessibility", "Đã ghi vào Clipboard: " + selectedText);
 //            }
+    }
 
-            } else if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_CLICKED) {
-                String viewText = getEventText(accessibilityEvent);
+    @Override
+    public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            try {
+                if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED) {
 
-                if (debug) Log.i("[Accessibility Service]", "Clicked view text: " + viewText);
+                    final int selectBegin = Objects.requireNonNull(accessibilityEvent.getSource()).getTextSelectionStart();
+                    final int selectEnd = Objects.requireNonNull(accessibilityEvent.getSource()).getTextSelectionEnd();
+                    if (selectBegin == selectEnd) return;
 
-                if (viewText.equalsIgnoreCase("Sao chép") ||
-                        viewText.equalsIgnoreCase("Copy")) {
-                    onClipboardChanged();
-                } else if (viewText.equalsIgnoreCase("Cắt") ||
-                        viewText.equalsIgnoreCase("Cut")) {
+                    selectedText = getEventText(accessibilityEvent).substring(selectBegin, selectEnd);
+                    if (debug) {
+                        Log.i("[Accessibility Service]", "Text: " + selectedText);
+                        Log.i("[Accessibility Service]", "Select begin: " + selectBegin);
+                        Log.i("[Accessibility Service]", "Select end: " + selectEnd);
+                    }
+
+                } else if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_CLICKED) {
+                    CharSequence className = accessibilityEvent.getClassName();
+                    String viewText = getEventText(accessibilityEvent);
+
+                    if (debug) {
+                        if (className != null)
+                            Log.i("[Accessibility Service]", "Classname of view: " + className);
+                        Log.i("[Accessibility Service]", "Clicked view text: " + viewText);
+                    }
+
+                    if (className != null && !className.toString().equals("android.widget.EditText") && !className.toString().equals("android.widget.TextView")) {
+                        if (viewText.equalsIgnoreCase("Sao chép") ||
+                                viewText.equalsIgnoreCase("Copy") ||
+                                viewText.equalsIgnoreCase("Cắt") ||
+                                viewText.equalsIgnoreCase("Cut")) {
+                            onClipboardChanged();
+                        }
+                    }
                 }
+            } catch (Exception e) {
+                if (debug) Log.e("[Accessibility Service]", "Exception: " + e.getMessage());
             }
-        } catch (Exception e) {
-            if (debug) Log.e("[Accessibility Service]", "Exception: " + e.getMessage());
         }
     }
 
