@@ -3,12 +3,8 @@ package com.mtechdwork.clipsync;
 import android.content.Intent;
 import android.os.Build;
 import android.view.accessibility.AccessibilityEvent;
-import android.content.ClipboardManager;
-import android.content.ClipData;
-import android.content.Context;
 import android.util.Log;
 
-import java.util.List;
 import java.util.Objects;
 
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
@@ -25,7 +21,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
     private void onClipboardChanged() {
 //        if (debug) Log.i("[Accessibility Service]", "Clipboard changed: " + selectedText);
-        Intent intent = new Intent(this, TestActivity.class);
+        Intent intent = new Intent(this, PopupActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

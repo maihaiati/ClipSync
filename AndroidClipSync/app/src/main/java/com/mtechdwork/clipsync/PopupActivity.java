@@ -6,17 +6,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-public class TestActivity extends AppCompatActivity {
+public class PopupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(0, 0);
+        setContentView(R.layout.activity_popup);
     }
 
     @Override
@@ -32,6 +30,7 @@ public class TestActivity extends AppCompatActivity {
                 Log.i("[Test Activity]", "Clipboard changed: " + clipText);
             } else Log.i("[Test Activity]", "Clipboard changed: null");
             finish();
+            overridePendingTransition(0, 0);
         }
     }
 }

@@ -16,7 +16,8 @@
         android:theme="@style/Theme.ClipSync"
         tools:targetApi="31">
         <activity
-            android:name=".TestActivity"
+            android:name=".PopupActivity"
+            android:theme="@style/Theme.NoAnimation"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
