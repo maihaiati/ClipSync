@@ -64,11 +64,14 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                         Log.i("[Accessibility Service]", "Clicked view text: " + viewText);
                     }
 
-                    if (className != null && !className.toString().equals("android.widget.EditText") && !className.toString().equals("android.widget.TextView")) {
-                        if (viewText.equalsIgnoreCase("Sao chép") ||
-                                viewText.equalsIgnoreCase("Copy") ||
-                                viewText.equalsIgnoreCase("Cắt") ||
-                                viewText.equalsIgnoreCase("Cut")) {
+                    if (className != null && !className.toString().equals("android.widget.EditText")
+                            && !(accessibilityEvent.getSource() != null
+                            && accessibilityEvent.getSource().isEditable())) {
+
+                        if (viewText.toLowerCase().contains("sao chép") ||
+                                viewText.toLowerCase().contains("copy") ||
+                                viewText.toLowerCase().contains("cắt") ||
+                                viewText.toLowerCase().contains("cut")) {
                             onClipboardChanged();
                         }
                     }
