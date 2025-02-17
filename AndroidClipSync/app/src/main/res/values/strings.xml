@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ClipSync</string>
+    <string name="swEnableSync">Bật đồng bộ clipboard</string>
 </resources>

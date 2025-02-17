@@ -1,5 +1,6 @@
 package com.mtechdwork.clipsync;
 
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -39,19 +40,44 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Kiểm tra xem ứng dụng có quyền truy cập Accessibility chưa
-        if (isAccessibilityServiceEnabled()) {
-            Toast.makeText(this, "Accessibility service is enabled.", Toast.LENGTH_SHORT).show();
-        } else {
-            // Kích hoạt dịch vụ Accessbility
-            Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
-            startActivity(intent);
-        }
+        isAccessibilityServiceEnabled(this, AccessibilityService.class);
     }
 
-    private boolean isAccessibilityServiceEnabled() {
-        // Kiểm tra xem Accessibility Service đã được kích hoạt chưa
-        int enabled = android.provider.Settings.Secure.getInt(getContentResolver(),
-                "accessibility_enabled", 0);
-        return enabled == 1;
+    private void showEnableAccessibilityDialog(Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle("Yêu cầu quyền Trợ năng")
+                .setMessage("Ứng dụng cần quyền Trợ năng để hoạt động. Hãy bật quyền này trong cài đặt.")
+                .setPositiveButton("Đi tới cài đặt", (dialog, which) -> {
+                    Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    context.startActivity(intent);
+                })
+                .setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss())
+                .setCancelable(false)
+                .show();
+    }
+
+    private boolean isAccessibilityServiceEnabled(Context context, Class<? extends AccessibilityService> serviceClass) {
+        String serviceId = context.getPackageName() + "/" + serviceClass.getName();
+
+        try {
+            String enabledServices = Settings.Secure.getString(context.getContentResolver(),
+                    Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            boolean accessibilityEnabled = Settings.Secure.getInt(context.getContentResolver(),
+                    Settings.Secure.ACCESSIBILITY_ENABLED, 0) == 1;
+
+            if (accessibilityEnabled && enabledServices != null) {
+                String[] services = enabledServices.split(":");
+                for (String service : services) {
+                    if (service.equalsIgnoreCase(serviceId)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        showEnableAccessibilityDialog(context);
+        return false;
     }
 }
