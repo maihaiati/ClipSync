@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private final boolean debug = true;
+    private FileHandler fileHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Check Accessibility permission
         isAccessibilityServiceEnabled(this, AccessibilityService.class);
+
+        // Read data file
+        fileHandler = new FileHandler(this);
+        fileHandler.writeData("Test data");
+        Log.i("File data", fileHandler.readData());
     }
 
     private void showEnableAccessibilityDialog(Context context) {
