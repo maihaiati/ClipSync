@@ -8,8 +8,7 @@ import android.util.Log;
 import java.util.Objects;
 
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
-    private boolean debug = true;
-    private String selectedText = "";
+    private final boolean debug = true;
 
     private String getEventText(AccessibilityEvent event) {
         StringBuilder sb = new StringBuilder();
@@ -20,7 +19,6 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     }
 
     private void onClipboardChanged() {
-//        if (debug) Log.i("[Accessibility Service]", "Clipboard changed: " + selectedText);
         Intent intent = new Intent(this, PopupActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -28,7 +26,6 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
     private void writeClipboard(String text) {
 //        if (!text.isEmpty()) {
-//                // Ghi vào Clipboard
 //                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 //                ClipData clip = ClipData.newPlainText("Copied Text", selectedText);
 //                clipboard.setPrimaryClip(clip);
@@ -41,20 +38,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             try {
-                if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED) {
-
-                    final int selectBegin = Objects.requireNonNull(accessibilityEvent.getSource()).getTextSelectionStart();
-                    final int selectEnd = Objects.requireNonNull(accessibilityEvent.getSource()).getTextSelectionEnd();
-                    if (selectBegin == selectEnd) return;
-
-                    selectedText = getEventText(accessibilityEvent).substring(selectBegin, selectEnd);
-                    if (debug) {
-                        Log.i("[Accessibility Service]", "Text: " + selectedText);
-                        Log.i("[Accessibility Service]", "Select begin: " + selectBegin);
-                        Log.i("[Accessibility Service]", "Select end: " + selectEnd);
-                    }
-
-                } else if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_CLICKED) {
+                if (accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_CLICKED) {
                     CharSequence className = accessibilityEvent.getClassName();
                     String viewText = getEventText(accessibilityEvent);
 
