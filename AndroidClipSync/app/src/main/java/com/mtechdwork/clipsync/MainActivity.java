@@ -8,18 +8,40 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
     private final boolean debug = true;
     private FileHandler fileHandler;
 
+    // Views
+    Switch swEnableSync;
+    Button btnPassChange;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        addViews();
+
+        btnPassChange.setOnClickListener(v -> {
+            Intent intent = new Intent(this, PassChange.class);
+            startActivity(intent);
+        });
 
         // For Android API < 29
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -39,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         fileHandler = new FileHandler(this);
         fileHandler.writeData("Test data");
         Log.i("File data", fileHandler.readData());
+    }
+
+    private void addViews() {
+        swEnableSync = findViewById(R.id.swEnableSync);
+        btnPassChange = findViewById(R.id.btnPassChange);
     }
 
     private void showEnableAccessibilityDialog(Context context) {

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">ClipSync</string>
     <string name="swEnableSync">Bật đồng bộ clipboard</string>
+    <string name="btnChangePass">Thay Đổi Mật Khẩu</string>
+    <string name="edtNewPass">Mật khẩu mới</string>
+    <string name="edtNewPassConfirm">Nhập lại mật khẩu mới</string>
+    <string name="edtOldPass">Mật khẩu cũ</string>
+    <string name="btnApply">Cập Nhật</string>
 </resources>
