@@ -49,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
             if (debug) Log.i("[Clipboard Manager]", "CLIPBOARD CHANGED");
             ClipData clipData = clipboardManager.getPrimaryClip();
             if (clipData != null) {
+                Communication communication = new Communication(this);
                 String clipText = String.valueOf(clipData.getItemAt(0).getText());
+                communication.sendBroadcast(clipText);
                 if (debug) Log.i("[Clipboard Manager]", "Clipboard changed: " + clipText);
             }
         });
