@@ -23,12 +23,12 @@ public class PopupActivity extends AppCompatActivity {
 
         if (hasFocus) {
             ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            Log.i("[Test Activity]", "CLIPBOARD CHANGED");
+            Log.i("[Popup Activity]", "CLIPBOARD CHANGED");
             ClipData clipData = clipboardManager.getPrimaryClip();
             if (clipData != null) {
                 String clipText = String.valueOf(clipData.getItemAt(0).getText());
-                Log.i("[Test Activity]", "Clipboard changed: " + clipText);
-            } else Log.i("[Test Activity]", "Clipboard changed: null");
+                Log.i("[Popup Activity]", "Clipboard changed: " + clipText);
+            } else Log.i("[Popup Activity]", "Clipboard changed: null");
             finish();
             overridePendingTransition(0, 0);
         }
