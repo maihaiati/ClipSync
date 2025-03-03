@@ -23,7 +23,8 @@ public class Communication {
         this.context = context.getApplicationContext();
     }
 
-    public void sendBroadcast(String messageStr) {
+    public void sendBroadcast() {
+        final String messageStr = "CS_BC"; // ClipSync_Broadcast Flag
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 

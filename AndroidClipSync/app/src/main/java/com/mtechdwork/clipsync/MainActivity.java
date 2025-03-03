@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         addViews();
+        BroadcastListener listener = new BroadcastListener();
+        listener.start();
 
         btnPassChange.setOnClickListener(v -> {
             Intent intent = new Intent(this, PassChange.class);
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             if (clipData != null) {
                 Communication communication = new Communication(this);
                 String clipText = String.valueOf(clipData.getItemAt(0).getText());
-                communication.sendBroadcast(clipText);
+                communication.sendBroadcast();
                 if (debug) Log.i("[Clipboard Manager]", "Clipboard changed: " + clipText);
             }
         });

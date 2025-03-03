@@ -27,6 +27,8 @@ public class PopupActivity extends AppCompatActivity {
             ClipData clipData = clipboardManager.getPrimaryClip();
             if (clipData != null) {
                 String clipText = String.valueOf(clipData.getItemAt(0).getText());
+                Communication communication = new Communication(this);
+                communication.sendBroadcast();
                 Log.i("[Popup Activity]", "Clipboard changed: " + clipText);
             } else Log.i("[Popup Activity]", "Clipboard changed: null");
             finish();
