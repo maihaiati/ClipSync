@@ -1,5 +1,6 @@
 package com.mtechdwork.clipsync;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -10,6 +11,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +22,10 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
 
     private final boolean debug = true;
-    private FileHandler fileHandler;
+    private SettingManager settingManager;
 
-    // Views
+    // VIEWS
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch swEnableSync;
     Button btnPassChange;
 
@@ -37,15 +40,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         addViews();
-        BroadcastListener listener = new BroadcastListener();
-        listener.start();
+        BroadcastListener broadcastListener = new BroadcastListener();
+        broadcastListener.start();
 
         btnPassChange.setOnClickListener(v -> {
             Intent intent = new Intent(this, PassChange.class);
             startActivity(intent);
         });
 
-        // For Android API < 29
+        // Check Accessibility permission
+        isAccessibilityServiceEnabled(this, AccessibilityService.class);
+
+        // Read data file
+        settingManager = new SettingManager(this);
+        swEnableSync.setChecked(settingManager.isEnable());
+
+        // EVENTS
+        // Clipboard changed listener (For Android API < 29)
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         clipboardManager.addPrimaryClipChangedListener(() -> {
             if (debug) Log.i("[Clipboard Manager]", "CLIPBOARD CHANGED");
@@ -58,13 +69,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Check Accessibility permission
-        isAccessibilityServiceEnabled(this, AccessibilityService.class);
+        swEnableSync.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            settingManager.setEnable(isChecked);
 
-        // Read data file
-        fileHandler = new FileHandler(this);
-        fileHandler.writeData("Test data");
-        Log.i("File data", fileHandler.readData());
+            if (!isChecked && broadcastListener.isAlive())
+                broadcastListener.stopListening();
+        });
     }
 
     private void addViews() {
