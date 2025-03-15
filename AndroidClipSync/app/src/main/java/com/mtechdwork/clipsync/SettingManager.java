@@ -3,13 +3,11 @@ package com.mtechdwork.clipsync;
 import android.content.Context;
 import android.util.Log;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
 
 public class SettingManager extends FileHandler {
-    private boolean debug = true;
 
     SettingManager(Context context) {
         super(context);
@@ -18,6 +16,7 @@ public class SettingManager extends FileHandler {
                 JSONObject jsonObject = new JSONObject();
 
                 // Init json data
+                jsonObject.put("username", "");
                 jsonObject.put("enable_sync", false);
                 jsonObject.put("password", "");
 
@@ -25,8 +24,54 @@ public class SettingManager extends FileHandler {
                 writeData(jsonString);
             }
         } catch (Exception e) {
-            if (debug) Log.e("[Setting Manager]", Objects.requireNonNull(e.getMessage()));
+            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
         }
+    }
+
+    private void debugInfo(String message, int type) {
+        // Type: 0 - Info, 1 - Warning, 2 - Error
+        boolean debug = true;
+        if (!debug) return;
+        String className = "[Setting Manager]";
+        switch (type) {
+            case 0:
+                Log.i(className, message);
+                break;
+
+            case 1:
+                Log.w(className, message);
+                break;
+
+            case 2:
+                Log.e(className, message);
+        }
+    }
+
+    public void setUsername(String username) {
+        try {
+            JSONObject jsonObject = new JSONObject(readData());
+
+            if (!username.equals("FAILED_TO_GET_USERNAME"))
+                jsonObject.put("username", username);
+            else {
+                jsonObject.put("username", "Username");
+            }
+
+            String jsonString = jsonObject.toString(4);
+            writeData(jsonString);
+        } catch (Exception e) {
+            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
+        }
+    }
+
+    public String getUsername() {
+        try {
+            JSONObject jsonObject = new JSONObject(readData());
+            return jsonObject.getString("username");
+        } catch (Exception e) {
+            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
+        }
+        return "FAILED_TO_GET_USERNAME";
     }
 
     public void setPassword(String password) {
@@ -38,7 +83,7 @@ public class SettingManager extends FileHandler {
             String jsonString = jsonObject.toString(4);
             writeData(jsonString);
         } catch (Exception e) {
-            if (debug) Log.e("[Setting Manager]", Objects.requireNonNull(e.getMessage()));
+            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
         }
     }
 
@@ -47,7 +92,7 @@ public class SettingManager extends FileHandler {
             JSONObject jsonObject = new JSONObject(readData());
             return jsonObject.getString("password");
         } catch (Exception e) {
-            if (debug) Log.e("[Setting Manager]", Objects.requireNonNull(e.getMessage()));
+            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
         }
         return "FAILED_TO_GET_PASS";
     }
@@ -61,7 +106,7 @@ public class SettingManager extends FileHandler {
             String jsonString = jsonObject.toString(4);
             writeData(jsonString);
         } catch (Exception e) {
-            if (debug) Log.e("[Setting Manager]", Objects.requireNonNull(e.getMessage()));
+            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
         }
     }
 
@@ -70,7 +115,7 @@ public class SettingManager extends FileHandler {
             JSONObject jsonObject = new JSONObject(readData());
             return jsonObject.getBoolean("enable_sync");
         } catch (Exception e) {
-            if (debug) Log.e("[Setting Manager]", Objects.requireNonNull(e.getMessage()));
+            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
         }
         return false;
     }

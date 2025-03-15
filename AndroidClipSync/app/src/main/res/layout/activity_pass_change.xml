@@ -9,6 +9,16 @@
     tools:context=".PassChange">
 
     <EditText
+        android:id="@+id/edtUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:hint="@string/txtUsername"
+        android:minHeight="48dp"
+        android:textSize="18sp" />
+
+    <EditText
         android:id="@+id/edtOldPass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
