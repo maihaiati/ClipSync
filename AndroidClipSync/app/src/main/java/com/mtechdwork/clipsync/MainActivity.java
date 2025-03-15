@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,10 +17,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     private final boolean debug = true;
     private SettingManager settingManager;
+    private BroadcastListener broadcastListener;
 
     // VIEWS
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -40,8 +41,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         addViews();
-        BroadcastListener broadcastListener = new BroadcastListener();
-        broadcastListener.start();
+
+        killOldThreads("ClipSync_BroadcastListener");
+
+        broadcastListener = new BroadcastListener(this);
+        broadcastListener.setName("ClipSync_BroadcastListener");
+        if (!broadcastListener.isAlive()) {
+            Log.i("[Main Activity]", "Start new BroadcastListener thread");
+            broadcastListener.start();
+        }
 
         btnPassChange.setOnClickListener(v -> {
             Intent intent = new Intent(this, PassChange.class);
@@ -61,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         clipboardManager.addPrimaryClipChangedListener(() -> {
             if (debug) Log.i("[Clipboard Manager]", "CLIPBOARD CHANGED");
             ClipData clipData = clipboardManager.getPrimaryClip();
-            if (clipData != null) {
+            if (clipData != null && settingManager.isEnable()) {
                 Communication communication = new Communication(this);
                 String clipText = String.valueOf(clipData.getItemAt(0).getText());
                 communication.sendBroadcast();
@@ -75,6 +83,16 @@ public class MainActivity extends AppCompatActivity {
             if (!isChecked && broadcastListener.isAlive())
                 broadcastListener.stopListening();
         });
+    }
+
+    private void killOldThreads(String threadName) {
+        Map<Thread, StackTraceElement[]> allThreads = Thread.getAllStackTraces();
+
+        for (Thread thread : allThreads.keySet()) {
+            if (thread.getName().contains(threadName)) {  // Kill thread có liên quan
+                thread.interrupt();
+            }
+        }
     }
 
     private void addViews() {

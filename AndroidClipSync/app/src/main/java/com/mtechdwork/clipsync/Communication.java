@@ -2,8 +2,6 @@ package com.mtechdwork.clipsync;
 
 import static android.content.ContentValues.TAG;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
@@ -19,12 +17,15 @@ public class Communication {
 
     private Context context;
 
+    private SettingManager settingManager;
+
     Communication(Context context) {
         this.context = context.getApplicationContext();
+        settingManager = new SettingManager(context);
     }
 
     public void sendBroadcast() {
-        final String messageStr = "CS_BC"; // ClipSync_Broadcast Flag
+        final String messageStr = "CS_BC_" + settingManager.getUsername(); // ClipSync_Broadcast Flag
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -34,10 +35,33 @@ public class Communication {
             byte[] sendData = messageStr.getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, getBroadcastAddress(), 7070);
             socket.send(sendPacket);
-            Log.i("[Communication]", "Broadcast packet sent to: " + getBroadcastAddress().getHostAddress());
+            debugInfo("Broadcast packet sent to: " + getBroadcastAddress().getHostAddress(), 0);
         } catch (IOException e) {
-            Log.e(TAG, "IOException: " + e.getMessage());
+            debugInfo(e.getMessage(), 2);
         }
+    }
+
+    private void debugInfo(String message, int type) {
+        // Type: 0 - Info, 1 - Warning, 2 - Error
+        boolean debug = true;
+        if (!debug) return;
+        String className = "[Communication]";
+        switch (type) {
+            case 0:
+                Log.i(className, message);
+                break;
+
+            case 1:
+                Log.w(className, message);
+                break;
+
+            case 2:
+                Log.e(className, message);
+        }
+    }
+
+    public void sendRequest(InetAddress ipAddress) {
+
     }
 
     private InetAddress getBroadcastAddress() throws IOException {
