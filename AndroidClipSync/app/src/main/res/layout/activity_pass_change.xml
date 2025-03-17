@@ -52,10 +52,19 @@
         android:minHeight="48dp" />
 
     <Button
-        android:id="@+id/btnApply"
-        android:layout_width="100dp"
+        android:id="@+id/btnChangeUser"
+        android:layout_width="156dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:text="@string/btnApply" />
+        android:layout_marginTop="20dp"
+        android:text="@string/btnChangeUser" />
+
+    <Button
+        android:id="@+id/btnChangePass"
+        android:layout_width="207dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="@string/btnChangePass" />
+
 </LinearLayout>
