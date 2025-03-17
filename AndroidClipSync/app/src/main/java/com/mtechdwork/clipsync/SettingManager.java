@@ -24,11 +24,11 @@ public class SettingManager extends FileHandler {
                 writeData(jsonString);
             }
         } catch (Exception e) {
-            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
+            log(Objects.requireNonNull(e.getMessage()), 2);
         }
     }
 
-    private void debugInfo(String message, int type) {
+    private void log(String message, int type) {
         // Type: 0 - Info, 1 - Warning, 2 - Error
         boolean debug = true;
         if (!debug) return;
@@ -60,7 +60,7 @@ public class SettingManager extends FileHandler {
             String jsonString = jsonObject.toString(4);
             writeData(jsonString);
         } catch (Exception e) {
-            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
+            log(Objects.requireNonNull(e.getMessage()), 2);
         }
     }
 
@@ -69,7 +69,7 @@ public class SettingManager extends FileHandler {
             JSONObject jsonObject = new JSONObject(readData());
             return jsonObject.getString("username");
         } catch (Exception e) {
-            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
+            log(Objects.requireNonNull(e.getMessage()), 2);
         }
         return "FAILED_TO_GET_USERNAME";
     }
@@ -83,7 +83,7 @@ public class SettingManager extends FileHandler {
             String jsonString = jsonObject.toString(4);
             writeData(jsonString);
         } catch (Exception e) {
-            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
+            log(Objects.requireNonNull(e.getMessage()), 2);
         }
     }
 
@@ -92,7 +92,7 @@ public class SettingManager extends FileHandler {
             JSONObject jsonObject = new JSONObject(readData());
             return jsonObject.getString("password");
         } catch (Exception e) {
-            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
+            log(Objects.requireNonNull(e.getMessage()), 2);
         }
         return "FAILED_TO_GET_PASS";
     }
@@ -106,7 +106,7 @@ public class SettingManager extends FileHandler {
             String jsonString = jsonObject.toString(4);
             writeData(jsonString);
         } catch (Exception e) {
-            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
+            log(Objects.requireNonNull(e.getMessage()), 2);
         }
     }
 
@@ -115,7 +115,7 @@ public class SettingManager extends FileHandler {
             JSONObject jsonObject = new JSONObject(readData());
             return jsonObject.getBoolean("enable_sync");
         } catch (Exception e) {
-            debugInfo(Objects.requireNonNull(e.getMessage()), 2);
+            log(Objects.requireNonNull(e.getMessage()), 2);
         }
         return false;
     }

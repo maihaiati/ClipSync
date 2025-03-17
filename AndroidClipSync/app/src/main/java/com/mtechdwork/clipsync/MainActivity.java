@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 
@@ -18,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         broadcastListener = new BroadcastListener(this);
         broadcastListener.setName("ClipSync_BroadcastListener");
-        if (!broadcastListener.isAlive()) {
-            Log.i("[Main Activity]", "Start new BroadcastListener thread");
-            broadcastListener.start();
-        }
+
+        Log.i("[Main Activity]", "Starting new BroadcastListener thread");
+        broadcastListener.start();
 
         btnPassChange.setOnClickListener(v -> {
             Intent intent = new Intent(this, PassChange.class);
@@ -67,14 +68,15 @@ public class MainActivity extends AppCompatActivity {
         // Clipboard changed listener (For Android API < 29)
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         clipboardManager.addPrimaryClipChangedListener(() -> {
-            if (debug) Log.i("[Clipboard Manager]", "CLIPBOARD CHANGED");
-            ClipData clipData = clipboardManager.getPrimaryClip();
-            if (clipData != null && settingManager.isEnable()) {
-                Communication communication = new Communication(this);
-                String clipText = String.valueOf(clipData.getItemAt(0).getText());
-                communication.sendBroadcast();
-                if (debug) Log.i("[Clipboard Manager]", "Clipboard changed: " + clipText);
-            }
+                ClipData clipData = clipboardManager.getPrimaryClip();
+                if (clipData != null && settingManager.isEnable()) {
+                    String clipText = String.valueOf(clipData.getItemAt(0).getText());
+
+                    if (debug) Log.i("[Clipboard Manager]", "Clipboard changed: " + clipText);
+
+                    Communication communication = new Communication(this);
+                    communication.sendBroadcast();
+                }
         });
 
         swEnableSync.setOnCheckedChangeListener((buttonView, isChecked) -> {

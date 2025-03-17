@@ -17,12 +17,14 @@ public class BroadcastListener extends Thread {
     private Context context;
     private SettingManager settingManager;
 
+    private DatagramSocket socket;
+
     BroadcastListener(Context context) {
         this.context = context;
         settingManager = new SettingManager(context);
     }
 
-    private void debugInfo(String message, int type) { // Debug method
+    private void log(String message, int type) { // Debug method
         // Type: 0 - Info, 1 - Warning, 2 - Error
         boolean debug = true;
         if (!debug) return;
@@ -43,6 +45,7 @@ public class BroadcastListener extends Thread {
 
     public void stopListening() {
         running = false;
+        if (socket != null && !socket.isClosed()) socket.close();
     }
 
     private String getIPAddress() {
@@ -68,7 +71,7 @@ public class BroadcastListener extends Thread {
     @Override
     public void run() {
         try {
-            DatagramSocket socket = new DatagramSocket(PORT);
+            socket = new DatagramSocket(PORT);
             byte[] buffer = new byte[1024];
 
             while (running) {
@@ -78,24 +81,23 @@ public class BroadcastListener extends Thread {
                 String receivedMessage = new String(packet.getData(), 0, packet.getLength());
                 InetAddress senderAddress = packet.getAddress();
 
-                debugInfo("Received: " + receivedMessage + " from " + senderAddress.getHostAddress(), 0);
                 if (checkSenderMatch(receivedMessage) && !Objects.equals(senderAddress.getHostAddress(), getIPAddress())) {
-
+                    log("Received: " + receivedMessage + " from " + senderAddress.getHostAddress(), 0);
                 }
             }
 
-            socket.close();
+            if (socket != null) socket.close();
         } catch (Exception e) {
             e.printStackTrace();
             stopListening();
         }
-
+        log("Thread stopped!", 0);
     }
 
     @Override
     public void interrupt() {
         super.interrupt();
-        debugInfo("Thread interrupt!", 0);
+        log("Thread interrupt!", 0);
         stopListening();
     }
 }

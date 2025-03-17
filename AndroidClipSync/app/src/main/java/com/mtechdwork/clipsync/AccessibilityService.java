@@ -5,10 +5,27 @@ import android.os.Build;
 import android.view.accessibility.AccessibilityEvent;
 import android.util.Log;
 
-import java.util.Objects;
-
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
     private final boolean debug = true;
+
+    private void log(String message, int type) {
+        // Type: 0 - Info, 1 - Warning, 2 - Error
+        boolean debug = true;
+        if (!debug) return;
+        String className = "[Accessibility Service]";
+        switch (type) {
+            case 0:
+                Log.i(className, message);
+                break;
+
+            case 1:
+                Log.w(className, message);
+                break;
+
+            case 2:
+                Log.e(className, message);
+        }
+    }
 
     private String getEventText(AccessibilityEvent event) {
         StringBuilder sb = new StringBuilder();
@@ -19,6 +36,7 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
     }
 
     private void onClipboardChanged() {
+        log("Clipboard changed", 0);
         Intent intent = new Intent(this, PopupActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -44,8 +62,8 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
 
                     if (debug) {
                         if (className != null)
-                            Log.i("[Accessibility Service]", "Classname of view: " + className);
-                        Log.i("[Accessibility Service]", "Clicked view text: " + viewText);
+                            log("Classname of view: " + className, 0);
+                        log("Clicked view text: " + viewText, 0);
                     }
 
                     if (className != null && !className.toString().equals("android.widget.EditText")
@@ -61,13 +79,13 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                     }
                 }
             } catch (Exception e) {
-                if (debug) Log.e("[Accessibility Service]", "Exception: " + e.getMessage());
+                log("Exception: " + e.getMessage(), 2);
             }
         }
     }
 
     @Override
     public void onInterrupt() {
-        if (debug) Log.w("[Accessibility Service]" , "Service interrupt!");
+        log("Service interrupt!", 1);
     }
 }
