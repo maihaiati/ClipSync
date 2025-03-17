@@ -44,14 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         addViews();
 
-        killOldThreads("ClipSync_BroadcastListener");
-
-        broadcastListener = new BroadcastListener(this);
-        broadcastListener.setName("ClipSync_BroadcastListener");
-
-        Log.i("[Main Activity]", "Starting new BroadcastListener thread");
-        broadcastListener.start();
-
         btnPassChange.setOnClickListener(v -> {
             Intent intent = new Intent(this, PassChange.class);
             startActivity(intent);
@@ -60,9 +52,16 @@ public class MainActivity extends AppCompatActivity {
         // Check Accessibility permission
         isAccessibilityServiceEnabled(this, AccessibilityService.class);
 
-        // Read data file
+        // Read data file & init
         settingManager = new SettingManager(this);
-        swEnableSync.setChecked(settingManager.isEnable());
+
+        if (settingManager.isEnable()) {
+            swEnableSync.setChecked(true);
+            initListenerThreads();
+        } else {
+            swEnableSync.setChecked(false);
+            killThreads("ClipSync_BroadcastListener");
+        }
 
         // EVENTS
         // Clipboard changed listener (For Android API < 29)
@@ -82,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
         swEnableSync.setOnCheckedChangeListener((buttonView, isChecked) -> {
             settingManager.setEnable(isChecked);
 
-            if (!isChecked && broadcastListener.isAlive())
-                broadcastListener.stopListening();
+            if (isChecked) initListenerThreads();
+            else killThreads("ClipSync_BroadcastListener");
         });
 
         button.setOnClickListener(v -> {
@@ -92,7 +91,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void killOldThreads(String threadName) {
+    private void initListenerThreads() {
+        killThreads("ClipSync_BroadcastListener");
+
+        broadcastListener = new BroadcastListener(this);
+        broadcastListener.setName("ClipSync_BroadcastListener");
+        Log.i("[Main Activity]", "Starting new BroadcastListener thread");
+        broadcastListener.start();
+    }
+
+    private void killThreads(String threadName) {
         Map<Thread, StackTraceElement[]> allThreads = Thread.getAllStackTraces();
 
         for (Thread thread : allThreads.keySet()) {
