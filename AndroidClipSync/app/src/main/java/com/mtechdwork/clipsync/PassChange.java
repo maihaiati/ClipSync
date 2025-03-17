@@ -2,6 +2,7 @@ package com.mtechdwork.clipsync;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +22,8 @@ public class PassChange extends AppCompatActivity {
     private SettingManager settingManager;
 
     // VIEWS
-    private Button btnApply;
+    private Button btnChangeUser;
+    private Button btnChangePass;
     private TextView edtOldPass;
     private TextView edtNewPass;
     private TextView edtNewPassConfirm;
@@ -46,9 +48,19 @@ public class PassChange extends AppCompatActivity {
         if (!username.equals("FAILED_TO_GET_USERNAME")) edtUsername.setText(username);
         else edtUsername.setText("");
 
-        btnApply.setOnClickListener(v -> {
+        btnChangeUser.setOnClickListener(v -> {
+            if (writeUsername())
+                Toast.makeText(this, "Thay đổi tên người dùng thành công!", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "Thay đổi tên người dùng thất bại!", Toast.LENGTH_SHORT).show();
+        });
+
+        btnChangePass.setOnClickListener(v -> {
             if (checkPasswordMatch(edtOldPass.getText().toString())) { // Check current password
-                if (writeUsername()) writePassword();
+                if (writePassword())
+                    Toast.makeText(this, "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this, "Thay đổi mật khẩu thất bại!", Toast.LENGTH_SHORT).show();
             } else
                 Toast.makeText(this, "Sai mật khẩu hiện tại!", Toast.LENGTH_SHORT).show();
         });
@@ -64,24 +76,24 @@ public class PassChange extends AppCompatActivity {
         return false;
     }
 
-    private void writePassword() {
+    private boolean writePassword() {
         String password = edtNewPass.getText().toString();
-        String username = settingManager.getUsername();
         if (password.equals(edtNewPassConfirm.getText().toString())) {
             if (!password.isEmpty())
-                settingManager.setPassword(sha512(username, password)); // Write password
-            Toast.makeText(this, "Thay đổi thông tin thành công!", Toast.LENGTH_SHORT).show();
-            return;
+                settingManager.setPassword(sha512(password)); // Write password
+            else
+                settingManager.setPassword("");
+            return true;
         }
         Toast.makeText(this, "Xác nhận mật khẩu mới không trùng khớp!", Toast.LENGTH_SHORT).show();
+        return false;
     }
 
-    private String sha512(String password, String salt) {
+    private String sha512(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
 
-            String passWithSalt = salt + password;
-            byte[] digest = md.digest(passWithSalt.getBytes());
+            byte[] digest = md.digest(password.getBytes());
             StringBuilder sb = new StringBuilder();
             for (byte b : digest)
                 sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
@@ -95,13 +107,13 @@ public class PassChange extends AppCompatActivity {
 
     private boolean checkPasswordMatch(String password) {
         String currentPass = settingManager.getPassword();
-        String username = settingManager.getUsername();
-        if (!password.isEmpty()) return sha512(username, password).equals(currentPass);
+        if (!password.isEmpty()) return sha512(password).equals(currentPass);
         return password.equals(currentPass);
     }
 
     private void addViews() {
-        btnApply = findViewById(R.id.btnApply);
+        btnChangeUser = findViewById(R.id.btnChangeUser);
+        btnChangePass = findViewById(R.id.btnChangePass);
         edtOldPass = findViewById(R.id.edtOldPass);
         edtNewPass = findViewById(R.id.edtNewPass);
         edtNewPassConfirm = findViewById(R.id.edtNewPassConfirm);
