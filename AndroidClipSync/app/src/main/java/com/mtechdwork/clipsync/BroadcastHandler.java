@@ -10,7 +10,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Objects;
 
-public class BroadcastListener extends Thread {
+public class BroadcastHandler extends Thread {
 
     private static final int PORT = 7070;
     private boolean running = true;
@@ -19,7 +19,7 @@ public class BroadcastListener extends Thread {
 
     private DatagramSocket socket;
 
-    BroadcastListener(Context context) {
+    BroadcastHandler(Context context) {
         this.context = context;
         settingManager = new SettingManager(context);
     }
@@ -28,7 +28,7 @@ public class BroadcastListener extends Thread {
         // Type: 0 - Info, 1 - Warning, 2 - Error
         boolean debug = true;
         if (!debug) return;
-        String className = "[Broadcast Listener]";
+        String className = "[Broadcast Handler]";
         switch (type) {
             case 0:
                 Log.i(className, message);
@@ -83,11 +83,14 @@ public class BroadcastListener extends Thread {
 
                 if (checkSenderMatch(receivedMessage) && !Objects.equals(senderAddress.getHostAddress(), getIPAddress())) {
                     log("Received: " + receivedMessage + " from " + senderAddress.getHostAddress(), 0);
+                    Communication communication = new Communication(context);
+                    communication.sendSyncRequest(senderAddress);
                 }
             }
 
             if (socket != null) socket.close();
         } catch (Exception e) {
+            log("EXCEPTION", 2);
             e.printStackTrace();
             stopListening();
         }
