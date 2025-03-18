@@ -1,0 +1,2 @@
+7070: UDP Broadcast
+7071: TCP Communication
