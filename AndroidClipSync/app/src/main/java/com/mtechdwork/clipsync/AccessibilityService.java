@@ -42,16 +42,6 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
         startActivity(intent);
     }
 
-    private void writeClipboard(String text) {
-//        if (!text.isEmpty()) {
-//                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-//                ClipData clip = ClipData.newPlainText("Copied Text", selectedText);
-//                clipboard.setPrimaryClip(clip);
-//
-//                Log.d("Accessibility", "Đã ghi vào Clipboard: " + selectedText);
-//            }
-    }
-
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
