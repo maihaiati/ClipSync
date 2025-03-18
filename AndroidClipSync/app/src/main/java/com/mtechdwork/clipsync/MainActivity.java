@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final boolean debug = true;
     private SettingManager settingManager;
-    private BroadcastListener broadcastListener;
+    private BroadcastHandler broadcastHandler;
+    private TCPHandler tcpHandler;
 
     // VIEWS
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -60,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
             initListenerThreads();
         } else {
             swEnableSync.setChecked(false);
-            killThreads("ClipSync_BroadcastListener");
+            killThreads("ClipSync_BroadcastHandler");
+            killThreads("ClipSync_TCPHandler");
         }
 
         // EVENTS
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     String clipText = String.valueOf(clipData.getItemAt(0).getText());
 
                     if (debug) Log.i("[Clipboard Manager]", "Clipboard changed: " + clipText);
+                    ClipboardData.setLatestData(clipText);
 
                     Communication communication = new Communication(this);
                     communication.sendBroadcast();
@@ -82,7 +85,10 @@ public class MainActivity extends AppCompatActivity {
             settingManager.setEnable(isChecked);
 
             if (isChecked) initListenerThreads();
-            else killThreads("ClipSync_BroadcastListener");
+            else {
+                killThreads("ClipSync_BroadcastHandler");
+                killThreads("ClipSync_TCPHandler");
+            }
         });
 
         button.setOnClickListener(v -> {
@@ -92,12 +98,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initListenerThreads() {
-        killThreads("ClipSync_BroadcastListener");
+        killThreads("ClipSync_BroadcastHandler");
+        killThreads("ClipSync_TCPHandler");
 
-        broadcastListener = new BroadcastListener(this);
-        broadcastListener.setName("ClipSync_BroadcastListener");
-        Log.i("[Main Activity]", "Starting new BroadcastListener thread");
-        broadcastListener.start();
+        broadcastHandler = new BroadcastHandler(this);
+        broadcastHandler.setName("ClipSync_BroadcastHandler");
+        Log.i("[Main Activity]", "Starting new BroadcastHandler thread");
+        broadcastHandler.start();
+
+        tcpHandler = new TCPHandler(this);
+        tcpHandler.setName("ClipSync_TCPHandler");
+        Log.i("[Main Activity]", "Starting new TCPHandler thread");
+        tcpHandler.start();
     }
 
     private void killThreads(String threadName) {
