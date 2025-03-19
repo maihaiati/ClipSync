@@ -11,12 +11,13 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.crypto.tink.aead.AeadConfig;
 
 import java.util.Map;
 
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         addViews();
+
+        XChaChaCrypto.init();
 
         btnPassChange.setOnClickListener(v -> {
             Intent intent = new Intent(this, PassChange.class);
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initListenerThreads() {
         killThreads("ClipSync_BroadcastHandler");
-        killThreads("ClipSync_TCPHandler");
+        killThreads("ClipSync_TCPHandler"); // Kill old threads
 
         broadcastHandler = new BroadcastHandler(this);
         broadcastHandler.setName("ClipSync_BroadcastHandler");
