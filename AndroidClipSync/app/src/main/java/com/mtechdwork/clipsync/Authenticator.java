@@ -16,7 +16,7 @@ public class Authenticator {
 
     @SuppressLint("DefaultLocale")
     public String genOTP() {
-        long currentTime = System.currentTimeMillis() / 60000; // Mỗi 60 giây đổi OTP
+        long currentTime = System.currentTimeMillis() / 30000; // Mỗi 30 giây đổi OTP
         String timeHex = Long.toHexString(currentTime).toUpperCase();
 
         try {
