@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     Switch swEnableSync;
     Button btnPassChange;
-    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 killThreads("ClipSync_TCPHandler");
             }
         });
-
-        button.setOnClickListener(v -> {
-            Authenticator authenticator = new Authenticator(this);
-            Toast.makeText(this, authenticator.genOTP(), Toast.LENGTH_SHORT).show();
-        });
     }
 
     private void initListenerThreads() {
@@ -125,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
     private void addViews() {
         swEnableSync = findViewById(R.id.swEnableSync);
         btnPassChange = findViewById(R.id.btnChangeInfo);
-        button = findViewById(R.id.button);
     }
 
     private void showEnableAccessibilityDialog(Context context) {
