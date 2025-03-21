@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.StrictMode;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class Communication {
 
@@ -55,8 +57,12 @@ public class Communication {
             socket.setBroadcast(true);
             byte[] sendData = messageStr.getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, getBroadcastAddress(), 7070);
-            socket.send(sendPacket);
-            log("Broadcast packet sent to: " + getBroadcastAddress().getHostAddress(), 0);
+
+            for (int i = 0; i < 3; i++) { // Send broadcast 3 times
+                socket.send(sendPacket);
+                log("Broadcast packet " + (i + 1) + " sent to: " + getBroadcastAddress().getHostAddress(), 0);
+                Thread.sleep(100);
+            }
         } catch (Exception e) {
             log(e.getMessage(), 2);
         }
@@ -72,9 +78,19 @@ public class Communication {
 
                 String otp = JsonGen.otpAuthJson(authenticator.genOTP());
 
-                // Gửi dữ liệu
-                writer.println(otp);
-                log("Sent: " + otp, 0);
+                if (otp != null || !otp.isEmpty()) {
+                    // Encrypt with XChaCha20-Poly1305
+                    byte[] associatedData = "metadata".getBytes(StandardCharsets.UTF_8);
+                    String encryptedOTP = XChaChaCrypto.encrypt(otp, associatedData);
+
+                    // Gửi dữ liệu
+                    writer.println(encryptedOTP);
+                    log("Sent OTP: " + otp, 0);
+                    log("Sent encrypted OTP: " + encryptedOTP, 0);
+                } else {
+                    writer.println("");
+                    log("Sent sync request", 0);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -89,8 +105,15 @@ public class Communication {
 
                 String clipboardData = JsonGen.dataJson(ClipboardData.getLatestData());
 
-                writer.println(clipboardData);
-                log("Sent: " + clipboardData, 0);
+                if (clipboardData != null) {
+                    // Encrypt with XChaCha20-Poly1305
+                    byte[] associatedData = "metadata".getBytes(StandardCharsets.UTF_8);
+                    String encryptData = XChaChaCrypto.encrypt(clipboardData, associatedData);
+
+                    writer.println(encryptData);
+                    log("Sent data: " + clipboardData, 0);
+                    log("Sent encrypted data: " + encryptData, 0);
+                } else log("Clipboard null. Ignore", 0);
             } catch (Exception e) {
                 log("EXCEPTION", 2);
                 e.printStackTrace();

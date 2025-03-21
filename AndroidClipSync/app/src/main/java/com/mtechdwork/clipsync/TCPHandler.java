@@ -1,6 +1,7 @@
 package com.mtechdwork.clipsync;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -11,6 +12,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class TCPHandler extends Thread {
 
@@ -52,8 +54,11 @@ public class TCPHandler extends Thread {
         }
     }
 
-    private void clientHandler(InetAddress ipAddress, String jsonMessage) {
+    private void clientHandler(InetAddress ipAddress, String encryptData) {
         try {
+            byte[] associatedData = "metadata".getBytes(StandardCharsets.UTF_8);
+            String jsonMessage = XChaChaCrypto.decrypt(encryptData, associatedData);
+
             JSONObject jsonObject = new JSONObject(jsonMessage);
 
             switch (jsonObject.getString("type")) {

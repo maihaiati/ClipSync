@@ -70,6 +70,12 @@ public class PassChange extends AppCompatActivity {
         String username = edtUsername.getText().toString();
         if (!username.equals("FAILED_TO_GET_USERNAME")) {
             settingManager.setUsername(username); // Write username
+
+            try {
+                XChaChaCrypto.loadKey(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return true;
         }
         Toast.makeText(this, "Tên người dùng không hợp lệ!", Toast.LENGTH_SHORT).show();
@@ -83,6 +89,12 @@ public class PassChange extends AppCompatActivity {
                 settingManager.setPassword(sha512(password)); // Write password
             else
                 settingManager.setPassword("");
+
+            try {
+                XChaChaCrypto.loadKey(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return true;
         }
         Toast.makeText(this, "Xác nhận mật khẩu mới không trùng khớp!", Toast.LENGTH_SHORT).show();
