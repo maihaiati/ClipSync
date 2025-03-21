@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
                     String clipText = String.valueOf(clipData.getItemAt(0).getText());
 
                     if (debug) Log.i("[Clipboard Manager]", "Clipboard changed: " + clipText);
+                    if (clipText.equals(ClipboardData.getLatestData())) {
+                        Log.i("[Clipboard Manager]", "Ignored self-triggered clipboard change");
+                        return;
+                    }
                     ClipboardData.setLatestData(clipText);
 
                     Communication communication = new Communication(this);
