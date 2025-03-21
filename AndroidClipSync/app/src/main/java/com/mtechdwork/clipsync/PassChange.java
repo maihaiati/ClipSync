@@ -2,7 +2,6 @@ package com.mtechdwork.clipsync;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,11 +13,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.security.MessageDigest;
-import java.util.Objects;
 
 public class PassChange extends AppCompatActivity {
 
-    private final boolean debug = true;
     private SettingManager settingManager;
 
     // VIEWS
@@ -66,6 +63,26 @@ public class PassChange extends AppCompatActivity {
         });
     }
 
+    /** @noinspection SameParameterValue*/
+    private void log(String message, int type) {
+        // Type: 0 - Info, 1 - Warning, 2 - Error
+        boolean debug = true;
+        if (!debug) return;
+        String className = "[PassChange]";
+        switch (type) {
+            case 0:
+                Log.i(className, message);
+                break;
+
+            case 1:
+                Log.w(className, message);
+                break;
+
+            case 2:
+                Log.e(className, message);
+        }
+    }
+
     private boolean writeUsername() {
         String username = edtUsername.getText().toString();
         if (!username.equals("FAILED_TO_GET_USERNAME")) {
@@ -74,7 +91,7 @@ public class PassChange extends AppCompatActivity {
             try {
                 XChaChaCrypto.loadKey(this);
             } catch (Exception e) {
-                e.printStackTrace();
+                log(e.getMessage(), 2);
             }
             return true;
         }
@@ -93,7 +110,7 @@ public class PassChange extends AppCompatActivity {
             try {
                 XChaChaCrypto.loadKey(this);
             } catch (Exception e) {
-                e.printStackTrace();
+                log(e.getMessage(), 2);
             }
             return true;
         }
@@ -112,7 +129,7 @@ public class PassChange extends AppCompatActivity {
 
             return sb.toString();
         } catch (Exception e) {
-            if (debug) Log.e("[Pass Change]", Objects.requireNonNull(e.getMessage()));
+            log(e.getMessage(), 2);
         }
         return "";
     }

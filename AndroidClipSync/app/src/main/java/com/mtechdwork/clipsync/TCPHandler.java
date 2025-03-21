@@ -1,14 +1,12 @@
 package com.mtechdwork.clipsync;
 
 import android.content.Context;
-import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,9 +14,8 @@ import java.nio.charset.StandardCharsets;
 
 public class TCPHandler extends Thread {
 
-    private final int PORT = 7071;
     private boolean running = true;
-    private Context context;
+    private final Context context;
     private ServerSocket serverSocket;
 
     TCPHandler(Context context) {
@@ -84,6 +81,7 @@ public class TCPHandler extends Thread {
     @Override
     public void run() {
         try {
+            int PORT = 7071;
             serverSocket = new ServerSocket(PORT);
             while (running) {
                 Socket clientSocket = serverSocket.accept(); // Chờ client kết nối

@@ -6,7 +6,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.util.Log;
 
 public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
-    private final boolean debug = true;
 
     private void log(String message, int type) {
         // Type: 0 - Info, 1 - Warning, 2 - Error
@@ -50,11 +49,10 @@ public class AccessibilityService extends android.accessibilityservice.Accessibi
                     CharSequence className = accessibilityEvent.getClassName();
                     String viewText = getEventText(accessibilityEvent);
 
-                    if (debug) {
-                        if (className != null)
-                            log("Classname of view: " + className, 0);
-                        log("Clicked view text: " + viewText, 0);
-                    }
+
+                    if (className != null)
+                        log("Classname of view: " + className, 0);
+                    log("Clicked view text: " + viewText, 0);
 
                     if (className != null && !className.toString().equals("android.widget.EditText")
                             && !(accessibilityEvent.getSource() != null

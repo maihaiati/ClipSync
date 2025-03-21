@@ -2,16 +2,37 @@ package com.mtechdwork.clipsync;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Authenticator {
 
-    private SettingManager settingManager;
+    private final SettingManager settingManager;
 
     Authenticator(Context context) {
         settingManager = new SettingManager(context);
+    }
+
+    /** @noinspection SameParameterValue*/
+    private void log(String message, int type) {
+        // Type: 0 - Info, 1 - Warning, 2 - Error
+        boolean debug = true;
+        if (!debug) return;
+        String className = "[Accessibility Service]";
+        switch (type) {
+            case 0:
+                Log.i(className, message);
+                break;
+
+            case 1:
+                Log.w(className, message);
+                break;
+
+            case 2:
+                Log.e(className, message);
+        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -42,7 +63,7 @@ public class Authenticator {
 
             return String.format("%06d", otp);
         } catch (Exception e) {
-            e.printStackTrace();
+            log(e.getMessage(), 2);
         }
         return "";
     }

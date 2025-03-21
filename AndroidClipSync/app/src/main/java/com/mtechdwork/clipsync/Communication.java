@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.StrictMode;
-import android.util.Base64;
 import android.util.Log;
 
 import java.io.IOException;
@@ -19,8 +18,8 @@ import java.nio.charset.StandardCharsets;
 public class Communication {
 
     private final int TCP_PORT = 7071;
-    private Context context;
-    private SettingManager settingManager;
+    private final Context context;
+    private final SettingManager settingManager;
     private DatagramSocket socket = null;
 
     Communication(Context context) {
@@ -78,7 +77,7 @@ public class Communication {
 
                 String otp = JsonGen.otpAuthJson(authenticator.genOTP());
 
-                if (otp != null || !otp.isEmpty()) {
+                if (otp != null && !otp.isEmpty()) {
                     // Encrypt with XChaCha20-Poly1305
                     byte[] associatedData = "metadata".getBytes(StandardCharsets.UTF_8);
                     String encryptedOTP = XChaChaCrypto.encrypt(otp, associatedData);
@@ -92,7 +91,7 @@ public class Communication {
                     log("Sent sync request", 0);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                log(e.getMessage(), 2);
             }
         }).start();
     }
@@ -115,8 +114,7 @@ public class Communication {
                     log("Sent encrypted data: " + encryptData, 0);
                 } else log("Clipboard null. Ignore", 0);
             } catch (Exception e) {
-                log("EXCEPTION", 2);
-                e.printStackTrace();
+                log(e.getMessage(), 2);
             }
         }).start();
     }

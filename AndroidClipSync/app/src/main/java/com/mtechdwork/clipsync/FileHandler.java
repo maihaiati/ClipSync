@@ -14,14 +14,14 @@ import java.util.Objects;
 
 public class FileHandler {
     private final boolean debug = true;
-    private final String fileName = "clipSyncData.txt";
-    private final String filePath = "ClipSync";
     File dataFile;
 
     FileHandler(Context context) {
         ContextWrapper contextWrapper = new ContextWrapper(context);
 
+        String filePath = "ClipSync";
         File directory = contextWrapper.getDir(filePath, Context.MODE_PRIVATE);
+        String fileName = "clipSyncData.txt";
         dataFile = new File(directory, fileName);
     }
 

@@ -14,8 +14,8 @@ public class BroadcastHandler extends Thread {
 
     private static final int PORT = 7070;
     private boolean running = true;
-    private Context context;
-    private SettingManager settingManager;
+    private final Context context;
+    private final SettingManager settingManager;
 
     private DatagramSocket socket;
 
@@ -90,8 +90,7 @@ public class BroadcastHandler extends Thread {
 
             if (socket != null) socket.close();
         } catch (Exception e) {
-            log("EXCEPTION", 2);
-            e.printStackTrace();
+            log(e.getMessage(), 2);
             stopListening();
         }
         log("Thread stopped!", 0);

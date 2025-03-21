@@ -5,6 +5,7 @@ import android.util.Log;
 import org.json.JSONObject;
 
 public class JsonGen {
+    /** @noinspection SameParameterValue*/
     private static void log(String message, int type) {
         // Type: 0 - Info, 1 - Warning, 2 - Error
         boolean debug = true;
@@ -32,8 +33,7 @@ public class JsonGen {
 
             return jsonObject.toString();
         } catch (Exception e) {
-            log("EXCEPTION", 2);
-            e.printStackTrace();
+            log(e.getMessage(), 2);
         }
         return null;
     }
@@ -47,8 +47,7 @@ public class JsonGen {
 
             return jsonObject.toString();
         } catch (Exception e) {
-            log("EXCEPTION", 2);
-            e.printStackTrace();
+            log(e.getMessage(), 2);
         }
         return null;
     }

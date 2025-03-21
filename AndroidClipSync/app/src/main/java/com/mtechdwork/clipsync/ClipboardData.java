@@ -16,6 +16,7 @@ public class ClipboardData {
         LATEST_DATA = latestData;
     }
 
+    /** @noinspection SameParameterValue*/
     private static void log(String message, int type) {
         // Type: 0 - Info, 1 - Warning, 2 - Error
         boolean debug = true;

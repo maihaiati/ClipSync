@@ -1,32 +1,19 @@
 package com.mtechdwork.clipsync;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Base64;
+import android.util.Log;
 
 import com.google.crypto.tink.Aead;
-import com.google.crypto.tink.CleartextKeysetHandle;
 import com.google.crypto.tink.KeysetHandle;
 import com.google.crypto.tink.aead.AeadConfig;
-import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.aead.XChaCha20Poly1305KeyManager;
-import com.google.crypto.tink.integration.android.AndroidKeysetManager;
-import com.google.crypto.tink.proto.KeyData;
-import com.google.crypto.tink.proto.KeyStatusType;
-import com.google.crypto.tink.proto.Keyset;
-import com.google.crypto.tink.proto.OutputPrefixType;
-import com.google.crypto.tink.proto.XChaCha20Poly1305KeyFormat;
-import com.google.crypto.tink.shaded.protobuf.ByteString;
 import com.google.crypto.tink.subtle.XChaCha20Poly1305;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 
 public class XChaChaCrypto {
-    private static KeysetHandle keysetHandle;
     private static Aead aead;
 
     public static void init(Context context) {
@@ -36,13 +23,34 @@ public class XChaChaCrypto {
 
                 loadKey(context);
             } catch (Exception e) {
-                e.printStackTrace();
+                log(e.getMessage(), 2);
             }
+        }
+    }
+
+    /** @noinspection SameParameterValue*/
+    private static void log(String message, int type) {
+        // Type: 0 - Info, 1 - Warning, 2 - Error
+        boolean debug = true;
+        if (!debug) return;
+        String className = "[XChaChaCrypto]";
+        switch (type) {
+            case 0:
+                Log.i(className, message);
+                break;
+
+            case 1:
+                Log.w(className, message);
+                break;
+
+            case 2:
+                Log.e(className, message);
         }
     }
 
     public static boolean isTinkInitialized() {
         try {
+            //noinspection unused
             KeysetHandle testKeyset = KeysetHandle.generateNew(XChaCha20Poly1305KeyManager.xChaCha20Poly1305Template());
             return true;
         } catch (GeneralSecurityException e) {
@@ -52,21 +60,21 @@ public class XChaChaCrypto {
 
     public static void loadKey(Context context) {
         new Thread(() -> {
-            byte[] derivedKey = null;
+            byte[] derivedKey;
             try {
                 derivedKey = PBKDF2.deriveKey(context);
                 aead = new XChaCha20Poly1305(derivedKey);
             } catch (Exception e) {
-                e.printStackTrace();
+                log(e.getMessage(), 2);
             }
         }).start();
     }
 
     public static String encrypt(String plaintext, byte[] associatedData) {
         try {
-            return Base64.encodeToString(aead.encrypt(plaintext.getBytes(StandardCharsets.UTF_8), null), Base64.NO_WRAP);
+            return Base64.encodeToString(aead.encrypt(plaintext.getBytes(StandardCharsets.UTF_8), associatedData), Base64.NO_WRAP);
         } catch (GeneralSecurityException e) {
-            e.printStackTrace();
+            log(e.getMessage(), 2);
         }
         return null;
     }
@@ -74,9 +82,9 @@ public class XChaChaCrypto {
     public static String decrypt(String ciphertext, byte[] associatedData) {
         byte[] decryptedBytes = null;
         try {
-            decryptedBytes = aead.decrypt(Base64.decode(ciphertext, Base64.NO_WRAP), null);
+            decryptedBytes = aead.decrypt(Base64.decode(ciphertext, Base64.NO_WRAP), associatedData);
         } catch (GeneralSecurityException e) {
-            e.printStackTrace();
+            log(e.getMessage(), 2);
         }
         return new String(decryptedBytes, StandardCharsets.UTF_8);
     }

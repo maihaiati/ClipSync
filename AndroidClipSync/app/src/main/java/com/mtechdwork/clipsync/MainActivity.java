@@ -9,10 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -25,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final boolean debug = true;
     private SettingManager settingManager;
-    private BroadcastHandler broadcastHandler;
-    private TCPHandler tcpHandler;
 
     // VIEWS
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -53,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Check Accessibility permission
-        isAccessibilityServiceEnabled(this, AccessibilityService.class);
+        isAccessibilityServiceEnabled(this);
 
         // Read data file & init
         settingManager = new SettingManager(this);
@@ -75,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
                 if (clipData != null && settingManager.isEnable()) {
                     String clipText = String.valueOf(clipData.getItemAt(0).getText());
 
-                    if (debug) Log.i("[Clipboard Manager]", "Clipboard changed: " + clipText);
+                    log("Clipboard changed: " + clipText, 0);
                     if (clipText.equals(ClipboardData.getLatestData())) {
-                        Log.i("[Clipboard Manager]", "Ignored self-triggered clipboard change");
+                        log("Ignored self-triggered clipboard change", 0);
                         return;
                     }
                     ClipboardData.setLatestData(clipText);
@@ -98,18 +94,38 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /** @noinspection SameParameterValue*/
+    private void log(String message, int type) {
+        // Type: 0 - Info, 1 - Warning, 2 - Error
+        boolean debug = true;
+        if (!debug) return;
+        String className = "[MainActivity]";
+        switch (type) {
+            case 0:
+                Log.i(className, message);
+                break;
+
+            case 1:
+                Log.w(className, message);
+                break;
+
+            case 2:
+                Log.e(className, message);
+        }
+    }
+
     private void initListenerThreads() {
         killThreads("ClipSync_BroadcastHandler");
         killThreads("ClipSync_TCPHandler"); // Kill old threads
 
-        broadcastHandler = new BroadcastHandler(this);
+        BroadcastHandler broadcastHandler = new BroadcastHandler(this);
         broadcastHandler.setName("ClipSync_BroadcastHandler");
-        Log.i("[Main Activity]", "Starting new BroadcastHandler thread");
+        log("Starting new BroadcastHandler thread", 0);
         broadcastHandler.start();
 
-        tcpHandler = new TCPHandler(this);
+        TCPHandler tcpHandler = new TCPHandler(this);
         tcpHandler.setName("ClipSync_TCPHandler");
-        Log.i("[Main Activity]", "Starting new TCPHandler thread");
+        log("Starting new TCPHandler thread", 0);
         tcpHandler.start();
     }
 
@@ -141,8 +157,9 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    private boolean isAccessibilityServiceEnabled(Context context, Class<? extends AccessibilityService> serviceClass) {
-        String serviceId = context.getPackageName() + "/" + serviceClass.getName();
+    /** @noinspection UnusedReturnValue*/
+    private boolean isAccessibilityServiceEnabled(Context context) {
+        String serviceId = context.getPackageName() + "/" + AccessibilityService.class.getName();
 
         try {
             String enabledServices = Settings.Secure.getString(context.getContentResolver(),
@@ -159,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log(e.getMessage(), 2);
         }
 
         showEnableAccessibilityDialog(context);

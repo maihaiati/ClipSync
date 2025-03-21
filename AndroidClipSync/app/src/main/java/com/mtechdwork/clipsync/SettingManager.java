@@ -28,6 +28,7 @@ public class SettingManager extends FileHandler {
         }
     }
 
+    /** @noinspection SameParameterValue*/
     private void log(String message, int type) {
         // Type: 0 - Info, 1 - Warning, 2 - Error
         boolean debug = true;
