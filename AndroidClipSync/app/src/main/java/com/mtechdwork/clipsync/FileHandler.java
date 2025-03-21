@@ -10,10 +10,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
-import java.util.Objects;
 
 public class FileHandler {
-    private final boolean debug = true;
     File dataFile;
 
     FileHandler(Context context) {
@@ -25,6 +23,26 @@ public class FileHandler {
         dataFile = new File(directory, fileName);
     }
 
+    /** @noinspection SameParameterValue*/
+    private void log(String message, int type) {
+        // Type: 0 - Info, 1 - Warning, 2 - Error
+        boolean debug = true;
+        if (!debug) return;
+        String className = "[FileHandler]";
+        switch (type) {
+            case 0:
+                Log.i(className, message);
+                break;
+
+            case 1:
+                Log.w(className, message);
+                break;
+
+            case 2:
+                Log.e(className, message);
+        }
+    }
+
     public void writeData(String data) {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(dataFile);
@@ -32,7 +50,7 @@ public class FileHandler {
             fileOutputStream.write(data.getBytes());
             fileOutputStream.close();
         } catch (Exception e) {
-            if (debug) Log.e("[File Handler]", Objects.requireNonNull(e.getMessage()));
+            log(e.getMessage(), 2);
         }
     }
 
@@ -50,7 +68,7 @@ public class FileHandler {
             dataInputStream.close();
             return data.toString();
         } catch (Exception e) {
-            if (debug) Log.e("[File Handler]", Objects.requireNonNull(e.getMessage()));
+            log(e.getMessage(), 2);
         }
         return "";
     }

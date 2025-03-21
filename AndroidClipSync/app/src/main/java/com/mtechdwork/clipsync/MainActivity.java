@@ -21,7 +21,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final boolean debug = true;
     private SettingManager settingManager;
 
     // VIEWS
