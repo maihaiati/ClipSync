@@ -1,12 +1,7 @@
 package com.mtechdwork.clipsync;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-
-import java.security.SecureRandom;
 import java.security.spec.KeySpec;
-import java.util.Base64;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
