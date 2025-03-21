@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ClipSync</string>
+    <string name="swEnableSync">Enable clipboard sync</string>
+    <string name="btnChangeInfo">Change infomation</string>
+    <string name="edtNewPass">New password</string>
+    <string name="edtNewPassConfirm">Confirm new password</string>
+    <string name="edtOldPass">Current password</string>
+    <string name="btnChangeUser">Update username</string>
+    <string name="btnChangePass">Update password</string>
+    <string name="txtUsername">Username</string>
+</resources>
