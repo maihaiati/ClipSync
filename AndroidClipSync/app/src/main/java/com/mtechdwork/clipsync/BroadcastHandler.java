@@ -26,7 +26,7 @@ public class BroadcastHandler extends Thread {
 
     private void log(String message, int type) { // Debug method
         // Type: 0 - Info, 1 - Warning, 2 - Error
-        boolean debug = true;
+        boolean debug = false;
         if (!debug) return;
         String className = "[Broadcast Handler]";
         switch (type) {

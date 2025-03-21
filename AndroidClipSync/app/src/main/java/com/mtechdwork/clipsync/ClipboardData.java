@@ -19,7 +19,7 @@ public class ClipboardData {
     /** @noinspection SameParameterValue*/
     private static void log(String message, int type) {
         // Type: 0 - Info, 1 - Warning, 2 - Error
-        boolean debug = true;
+        boolean debug = false;
         if (!debug) return;
         String className = "[Clipboard Data]";
         switch (type) {

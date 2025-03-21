@@ -27,14 +27,13 @@ public class TCPHandler extends Thread {
             running = false;
             if (serverSocket != null) serverSocket.close();
         } catch (Exception e) {
-            log("EXCEPTION", 2);
-            e.printStackTrace();
+            log(e.getMessage(), 2);
         }
     }
 
     private void log(String message, int type) { // Debug method
         // Type: 0 - Info, 1 - Warning, 2 - Error
-        boolean debug = true;
+        boolean debug = false;
         if (!debug) return;
         String className = "[TCP Handler]";
         switch (type) {
@@ -73,8 +72,7 @@ public class TCPHandler extends Thread {
                     break;
             }
         } catch (Exception e) {
-            log("EXCEPTION", 2);
-            e.printStackTrace();
+            log(e.getMessage(), 2);
         }
     }
 
@@ -100,8 +98,7 @@ public class TCPHandler extends Thread {
                 clientSocket.close();
             }
         } catch (Exception e) {
-            log("EXCEPTION", 2);
-            e.printStackTrace();
+            log(e.getMessage(), 2);
         }
     }
 

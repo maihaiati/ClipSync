@@ -66,7 +66,7 @@ public class PassChange extends AppCompatActivity {
     /** @noinspection SameParameterValue*/
     private void log(String message, int type) {
         // Type: 0 - Info, 1 - Warning, 2 - Error
-        boolean debug = true;
+        boolean debug = false;
         if (!debug) return;
         String className = "[PassChange]";
         switch (type) {
