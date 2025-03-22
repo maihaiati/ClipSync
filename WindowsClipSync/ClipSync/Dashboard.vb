@@ -1,7 +1,7 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Public Class Form1
+Public Class Dashboard
     ' Windows API
     Private Const WM_CLIPBOARDUPDATE As Integer = &H31D
     Private Shared ReadOnly HWND_MESSAGE As IntPtr = New IntPtr(-3)
