@@ -2,3 +2,4 @@ https://developer.android.com/about/versions/10/privacy/changes?hl=vi#clipboard-
 https://viblo.asia/p/lap-trinh-android-voi-bo-nho-trong-internal-storage-PdbknoJRvyA
 https://stackoverflow.com/questions/64030969/how-to-broadcast-a-udp-packet-from-android
 https://developers.google.com/tink?hl=vi
+https://vi.wikipedia.org/wiki/TCP#:~:text=TCP%20(Transmission%20Control%20Protocol%20%2D%20%22,li%E1%BB%87u%20ho%E1%BA%B7c%20c%C3%A1c%20g%C3%B3i%20tin.
