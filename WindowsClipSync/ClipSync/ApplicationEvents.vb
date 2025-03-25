@@ -24,6 +24,8 @@ Namespace My
     ' End Sub
 
     Partial Friend Class MyApplication
-
+        Private Sub MyApplication_UnhandledException(sender As Object, e As UnhandledExceptionEventArgs) Handles Me.UnhandledException
+            MessageBox.Show("Đã xảy ra lỗi không xác định!", "ClipSync", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Sub
     End Class
 End Namespace
