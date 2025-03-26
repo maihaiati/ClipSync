@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class Dashboard
+Partial Class MainWindow
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -43,15 +43,15 @@ Partial Class Dashboard
 		PictureBox1.TabIndex = 1
 		PictureBox1.TabStop = False
 		' 
-		' Form1
+		' MainWindow
 		' 
 		AutoScaleDimensions = New SizeF(7F, 15F)
 		AutoScaleMode = AutoScaleMode.Font
 		ClientSize = New Size(800, 450)
 		Controls.Add(PictureBox1)
 		Controls.Add(TextBox1)
-		Name = "Form1"
-		Text = "Form1"
+		Name = "MainWindow"
+		Text = "ClipSync"
 		CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
 		ResumeLayout(False)
 		PerformLayout()
@@ -59,5 +59,6 @@ Partial Class Dashboard
 
 	Friend WithEvents TextBox1 As TextBox
 	Friend WithEvents PictureBox1 As PictureBox
+	Friend WithEvents notiIcon As NotifyIconManager
 
 End Class
