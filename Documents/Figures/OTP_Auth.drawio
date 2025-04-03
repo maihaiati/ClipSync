@@ -1,0 +1,46 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
+  <diagram name="Page-1" id="dnKO3U8q5_409v67xQyn">
+    <mxGraphModel dx="840" dy="95" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="JT_80c5jacieltzl9xxz-1" value="Host A" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="365" y="403" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JT_80c5jacieltzl9xxz-2" value="Host B" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="643" y="403" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JT_80c5jacieltzl9xxz-3" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="JT_80c5jacieltzl9xxz-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="425" y="673" as="sourcePoint" />
+            <mxPoint x="440" y="544" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JT_80c5jacieltzl9xxz-7" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="703" y="672" as="sourcePoint" />
+            <mxPoint x="702.6600000000001" y="463" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JT_80c5jacieltzl9xxz-12" value="Broadcast (with Username)" style="endArrow=classic;html=1;rounded=0;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="425" y="513" as="sourcePoint" />
+            <mxPoint x="702" y="514" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JT_80c5jacieltzl9xxz-13" value="Sync request (with OTP)" style="endArrow=classic;html=1;rounded=0;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="703" y="574" as="sourcePoint" />
+            <mxPoint x="426" y="573" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JT_80c5jacieltzl9xxz-15" value="Clipboard data" style="endArrow=classic;html=1;rounded=0;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="425" y="634" as="sourcePoint" />
+            <mxPoint x="702" y="635" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
