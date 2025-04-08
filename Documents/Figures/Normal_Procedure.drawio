@@ -1,0 +1,59 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
+  <diagram name="Page-1" id="wPnXP5Wu6hCZEHjr8IB3">
+    <mxGraphModel dx="1020" dy="601" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="wXK4wkwFhtRQZVDzO6l7-1" value="Host A" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="186" y="347" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wXK4wkwFhtRQZVDzO6l7-2" value="Host B" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="495" y="347" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wXK4wkwFhtRQZVDzO6l7-5" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" target="wXK4wkwFhtRQZVDzO6l7-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="246" y="734" as="sourcePoint" />
+            <mxPoint x="415" y="549" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wXK4wkwFhtRQZVDzO6l7-6" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="554.71" y="734" as="sourcePoint" />
+            <mxPoint x="554.71" y="407" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wXK4wkwFhtRQZVDzO6l7-7" value="Broadcast (with Username)" style="endArrow=classic;html=1;rounded=0;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="246" y="448" as="sourcePoint" />
+            <mxPoint x="555" y="448" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wXK4wkwFhtRQZVDzO6l7-9" value="RSA Public key" style="endArrow=classic;html=1;rounded=0;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry x="-0.0006" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="555" y="501" as="sourcePoint" />
+            <mxPoint x="246" y="501" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wXK4wkwFhtRQZVDzO6l7-10" value="RSA Public key" style="endArrow=classic;html=1;rounded=0;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="246" y="554" as="sourcePoint" />
+            <mxPoint x="555" y="554" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wXK4wkwFhtRQZVDzO6l7-11" value="Sync request (with OTP)" style="endArrow=classic;html=1;rounded=0;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="555" y="607" as="sourcePoint" />
+            <mxPoint x="246" y="607" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wXK4wkwFhtRQZVDzO6l7-12" value="Clipboard data" style="endArrow=classic;html=1;rounded=0;verticalAlign=bottom;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="246" y="660" as="sourcePoint" />
+            <mxPoint x="555" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
