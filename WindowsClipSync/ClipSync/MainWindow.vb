@@ -1,6 +1,6 @@
 ﻿Imports System.Runtime.InteropServices
-Imports System.Windows.Forms
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+Imports System.Text
+
 Public Class MainWindow
 	' Windows API
 	Private Const WM_CLIPBOARDUPDATE As Integer = &H31D
@@ -29,6 +29,7 @@ Public Class MainWindow
 
 			' TEXT DATA
 			' DO SOMETHING HERE
+			MsgBox(XChaChaCrypto.encrypt(clipboardText, Encoding.UTF8.GetBytes("metadata")))
 			MsgBox(clipboardText)
 
 		ElseIf Clipboard.ContainsImage() Then
@@ -40,6 +41,7 @@ Public Class MainWindow
 	Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Dim notiIcon As NotifyIconManager = New NotifyIconManager(Me)
 
+		XChaChaCrypto.loadKey()
 		AddClipboardFormatListener(Me.Handle)
 	End Sub
 
