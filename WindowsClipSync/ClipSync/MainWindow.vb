@@ -30,6 +30,7 @@ Public Class MainWindow
 			' TEXT DATA
 			' DO SOMETHING HERE
 			MsgBox(XChaChaCrypto.encrypt(clipboardText, Encoding.UTF8.GetBytes("metadata")))
+			Communication.sendBroadcast()
 			MsgBox(clipboardText)
 
 		ElseIf Clipboard.ContainsImage() Then
