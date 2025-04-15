@@ -42,8 +42,14 @@ Public Class MainWindow
 	Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 		Dim notiIcon As NotifyIconManager = New NotifyIconManager(Me)
 
-		XChaChaCrypto.loadKey()
-		AddClipboardFormatListener(Me.Handle)
+		If SettingManager.isEnable Then
+			btnEnable.Text = "Tắt"
+			XChaChaCrypto.loadKey()
+			AddClipboardFormatListener(Me.Handle)
+		Else
+			btnEnable.Text = "Bật"
+			RemoveClipboardFormatListener(Me.Handle)
+		End If
 	End Sub
 
 	Private Sub btnChangeInfo_Click(sender As Object, e As EventArgs) Handles btnChangeInfo.Click
@@ -51,5 +57,17 @@ Public Class MainWindow
 
 		infoChange.Show()
 		Me.Hide()
+	End Sub
+
+	Private Sub btnEnable_Click(sender As Object, e As EventArgs) Handles btnEnable.Click
+		SettingManager.setEnable(Not SettingManager.isEnable)
+		If SettingManager.isEnable Then
+			btnEnable.Text = "Tắt"
+			XChaChaCrypto.loadKey()
+			AddClipboardFormatListener(Me.Handle)
+		Else
+			btnEnable.Text = "Bật"
+			RemoveClipboardFormatListener(Me.Handle)
+		End If
 	End Sub
 End Class

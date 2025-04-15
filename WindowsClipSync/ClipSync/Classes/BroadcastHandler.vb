@@ -9,6 +9,7 @@ Public Class BroadcastHandler
 	Private broadcastListening As New Thread(AddressOf listening)
 
 	Public Sub startListening()
+		broadcastListening.IsBackground = True
 		broadcastListening.Start()
 	End Sub
 
