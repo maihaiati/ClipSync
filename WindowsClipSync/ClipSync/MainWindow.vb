@@ -2,6 +2,8 @@
 Imports System.Text
 
 Public Class MainWindow
+	Dim broadcastHandler As New BroadcastHandler
+
 	' Windows API
 	Private Const WM_CLIPBOARDUPDATE As Integer = &H31D
 	Private Shared ReadOnly HWND_MESSAGE As IntPtr = New IntPtr(-3)
@@ -46,9 +48,11 @@ Public Class MainWindow
 			btnEnable.Text = "Tắt"
 			XChaChaCrypto.loadKey()
 			AddClipboardFormatListener(Me.Handle)
+			broadcastHandler.startListening(7070)
 		Else
 			btnEnable.Text = "Bật"
 			RemoveClipboardFormatListener(Me.Handle)
+			broadcastHandler.stopListening()
 		End If
 	End Sub
 
@@ -65,9 +69,11 @@ Public Class MainWindow
 			btnEnable.Text = "Tắt"
 			XChaChaCrypto.loadKey()
 			AddClipboardFormatListener(Me.Handle)
+			broadcastHandler.startListening(7070)
 		Else
 			btnEnable.Text = "Bật"
 			RemoveClipboardFormatListener(Me.Handle)
+			broadcastHandler.stopListening()
 		End If
 	End Sub
 End Class
