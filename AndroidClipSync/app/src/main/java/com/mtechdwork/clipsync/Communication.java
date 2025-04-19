@@ -18,6 +18,8 @@ import java.nio.charset.StandardCharsets;
 public class Communication {
 
     private final int TCP_PORT = 7071;
+    /** @noinspection FieldCanBeLocal*/
+    private final int UDP_PORT = 7070;
     private final Context context;
     private final SettingManager settingManager;
     private DatagramSocket socket = null;
@@ -55,7 +57,7 @@ public class Communication {
             socket = new DatagramSocket();
             socket.setBroadcast(true);
             byte[] sendData = messageStr.getBytes();
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, getBroadcastAddress(), 7070);
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, getBroadcastAddress(), UDP_PORT);
 
             for (int i = 0; i < 3; i++) { // Send broadcast 3 times
                 socket.send(sendPacket);
