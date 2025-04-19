@@ -76,4 +76,9 @@ Public Class MainWindow
 			broadcastHandler.stopListening()
 		End If
 	End Sub
+
+	Private Sub btnSend_Click(sender As Object, e As EventArgs) Handles btnSend.Click
+		ClipboardData.writeClipboard(richData.Text)
+		'Communication.sendBroadcast()
+	End Sub
 End Class
