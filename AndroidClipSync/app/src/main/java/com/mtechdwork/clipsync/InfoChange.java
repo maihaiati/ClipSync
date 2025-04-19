@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.security.MessageDigest;
 
-public class PassChange extends AppCompatActivity {
+public class InfoChange extends AppCompatActivity {
 
     private SettingManager settingManager;
 
@@ -30,7 +30,7 @@ public class PassChange extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_pass_change);
+        setContentView(R.layout.activity_info_change);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -68,7 +68,7 @@ public class PassChange extends AppCompatActivity {
         // Type: 0 - Info, 1 - Warning, 2 - Error
         boolean debug = false;
         if (!debug) return;
-        String className = "[PassChange]";
+        String className = "[InfoChange]";
         switch (type) {
             case 0:
                 Log.i(className, message);
