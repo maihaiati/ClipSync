@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Security.Cryptography
+Imports System.Security.Policy
 Imports System.Text
 
 Public Class InfoChange
@@ -64,7 +65,9 @@ Public Class InfoChange
 			passwordHash = sha512.ComputeHash(passwordBytes)
 		End Using
 
-		Return passwordHash.ToString
+		Dim hexString As String = BitConverter.ToString(passwordHash).Replace("-", "").ToLower()
+
+		Return hexString
 	End Function
 
 	Private Function checkPasswordMatch(password As String) As Boolean
