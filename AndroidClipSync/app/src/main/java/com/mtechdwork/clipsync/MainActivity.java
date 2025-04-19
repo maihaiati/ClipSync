@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         XChaChaCrypto.init(this);
 
         btnPassChange.setOnClickListener(v -> {
-            Intent intent = new Intent(this, PassChange.class);
+            Intent intent = new Intent(this, InfoChange.class);
             startActivity(intent);
         });
 
