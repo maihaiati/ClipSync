@@ -1,4 +1,6 @@
-﻿Public Class ClipboardData
+﻿Imports System.Threading
+
+Public Class ClipboardData
 	Private Shared latestData As String = ""
 
 	Public Shared Function getLatestData() As String
@@ -11,6 +13,12 @@
 
 	Public Shared Sub writeClipboard(text As String)
 		setLatestData(text)
-		Clipboard.SetText(text)
+
+		Dim staThread As New Thread(Sub()
+										Clipboard.SetText(text)
+									End Sub)
+		staThread.SetApartmentState(ApartmentState.STA)
+		staThread.Start()
+		staThread.Join()
 	End Sub
 End Class

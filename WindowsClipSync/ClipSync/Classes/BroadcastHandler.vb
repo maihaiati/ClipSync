@@ -7,10 +7,11 @@ Public Class BroadcastHandler
 	Private broadcastListening As Thread
 	Private listener As UdpClient
 	Private running = False
+	Private UDP_PORT = 7070
 
-	Public Sub startListening(port As Integer)
+	Public Sub startListening()
 		running = True
-		listener = New UdpClient(New IPEndPoint(IPAddress.Parse(LocalIP.getIPAddress()), 7070))
+		listener = New UdpClient(New IPEndPoint(LocalIP.getIPAddress(), UDP_PORT))
 		broadcastListening = New Thread(AddressOf listening)
 		broadcastListening.IsBackground = True
 		broadcastListening.Start()
@@ -35,11 +36,12 @@ Public Class BroadcastHandler
 				Dim data As Byte() = listener.Receive(remoteEP)
 				Dim message As String = Encoding.UTF8.GetString(data)
 
-				If checkSenderMatch(message) AndAlso LocalIP.getIPAddress() <> remoteEP.Address.ToString Then
-					ClipSyncDebug.log("Nhận từ " & remoteEP.Address.ToString() & ": " & message)
+				If checkSenderMatch(message) AndAlso LocalIP.getIPAddress().ToString <> remoteEP.Address.ToString Then
+					ClipSyncDebug.log("Received from " & remoteEP.Address.ToString() & ": " & message)
+					Communication.sendSyncRequest(remoteEP.Address)
 				End If
 			Catch ex As Exception
-				ClipSyncDebug.log("[BroadcastHandler] Lỗi nhận UDP: " & ex.Message)
+				ClipSyncDebug.log("[BroadcastHandler] UDP receive error: " & ex.Message)
 			End Try
 		End While
 		ClipSyncDebug.log("[BroadcastHandler] Stop thread")

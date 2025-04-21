@@ -38,7 +38,7 @@ Public Class NotifyIconManager
     Private Sub ExitApp(sender As Object, e As EventArgs)
         notifyIcon.Dispose()
         ' Ngừng lắng nghe clipboard khi đóng form
-        mainForm.RemoveClipboardFormatListener(mainForm.Handle)
+        mainForm.enableSync(False)
         Application.Exit()
     End Sub
 

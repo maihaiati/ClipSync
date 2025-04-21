@@ -3,6 +3,7 @@ Imports System.Text
 
 Public Class MainWindow
 	Dim broadcastHandler As New BroadcastHandler
+	Dim tcpHandler As New TCPHandler
 
 	' Windows API
 	Private Const WM_CLIPBOARDUPDATE As Integer = &H31D
@@ -31,29 +32,38 @@ Public Class MainWindow
 
 			' TEXT DATA
 			' DO SOMETHING HERE
-			MsgBox(XChaChaCrypto.encrypt(clipboardText, Encoding.UTF8.GetBytes("metadata")))
-			Communication.sendBroadcast()
-			MsgBox(clipboardText)
+			If ClipboardData.getLatestData() = clipboardText Then
+				ClipSyncDebug.log("[MainWindow] Ignored self-triggered clipboard change")
+				Return
+			End If
 
+			ClipboardData.setLatestData(clipboardText)
+			Communication.sendBroadcast()
 		ElseIf Clipboard.ContainsImage() Then
 			' IMAGE DATA
 			' DO SOMETHING HERE
 		End If
 	End Sub
 
-	Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-		Dim notiIcon As NotifyIconManager = New NotifyIconManager(Me)
-
-		If SettingManager.isEnable Then
+	Public Sub enableSync(enable As Boolean)
+		If enable Then
 			btnEnable.Text = "Tắt"
 			XChaChaCrypto.loadKey()
 			AddClipboardFormatListener(Me.Handle)
-			broadcastHandler.startListening(7070)
+			broadcastHandler.startListening()
+			tcpHandler.startListening()
 		Else
 			btnEnable.Text = "Bật"
 			RemoveClipboardFormatListener(Me.Handle)
 			broadcastHandler.stopListening()
+			tcpHandler.stopListening()
 		End If
+	End Sub
+
+	Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+		Dim notiIcon As NotifyIconManager = New NotifyIconManager(Me)
+
+		enableSync(SettingManager.isEnable())
 	End Sub
 
 	Private Sub btnChangeInfo_Click(sender As Object, e As EventArgs) Handles btnChangeInfo.Click
@@ -65,20 +75,12 @@ Public Class MainWindow
 
 	Private Sub btnEnable_Click(sender As Object, e As EventArgs) Handles btnEnable.Click
 		SettingManager.setEnable(Not SettingManager.isEnable)
-		If SettingManager.isEnable Then
-			btnEnable.Text = "Tắt"
-			XChaChaCrypto.loadKey()
-			AddClipboardFormatListener(Me.Handle)
-			broadcastHandler.startListening(7070)
-		Else
-			btnEnable.Text = "Bật"
-			RemoveClipboardFormatListener(Me.Handle)
-			broadcastHandler.stopListening()
-		End If
+
+		enableSync(SettingManager.isEnable())
 	End Sub
 
 	Private Sub btnSend_Click(sender As Object, e As EventArgs) Handles btnSend.Click
 		ClipboardData.writeClipboard(richData.Text)
-		'Communication.sendBroadcast()
+		Communication.sendBroadcast()
 	End Sub
 End Class
