@@ -22,6 +22,7 @@ Partial Class InfoChange
 	'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()> _
 	Private Sub InitializeComponent()
+		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(InfoChange))
 		txtUsername = New TextBox()
 		txtOldPass = New TextBox()
 		txtNewPass = New TextBox()
@@ -94,8 +95,9 @@ Partial Class InfoChange
 		Controls.Add(txtNewPass)
 		Controls.Add(txtOldPass)
 		Controls.Add(txtUsername)
+		Icon = CType(resources.GetObject("$this.Icon"), Icon)
 		Name = "InfoChange"
-		Text = "InfoChange"
+		Text = "Thay đổi thông tin"
 		ResumeLayout(False)
 		PerformLayout()
 	End Sub
