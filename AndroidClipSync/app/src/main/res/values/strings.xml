@@ -8,4 +8,5 @@
     <string name="btnChangeUser">Cập Nhật Tên</string>
     <string name="btnChangePass">Cập Nhật Mật Khẩu</string>
     <string name="txtUsername">Tên người dùng</string>
+    <string name="accessibilityDes">ClipSync cho phép đồng bộ nội dung clipboard giữa nhiều thiết bị trong cùng một mạng nội bộ. Ứng dụng hoạt động âm thầm dưới nền và tự động truyền nội dung văn bản. Accessibility được sử dụng để giữ ứng dụng chạy ngầm cho tất cả các phiên bản Android, và phát hiện sự kiện thay đổi clipboard đối với các phiên bản từ Android 10 trở lên.</string>
 </resources>

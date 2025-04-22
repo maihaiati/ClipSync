@@ -9,4 +9,5 @@
     <string name="btnChangeUser">Update username</string>
     <string name="btnChangePass">Update password</string>
     <string name="txtUsername">Username</string>
+    <string name="accessibilityDes">ClipSync allows seamless clipboard synchronization between multiple devices over the local network. It operates silently in the background and automatically transfers text content across devices. Accessibility is used to keep apps running in the background for all Android versions, and detect clipboard change events for versions from Android 10 and above.</string>
 </resources>
