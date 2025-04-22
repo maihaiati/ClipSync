@@ -22,6 +22,7 @@ Partial Class MainWindow
 	'Do not modify it using the code editor.
 	<System.Diagnostics.DebuggerStepThrough()>
 	Private Sub InitializeComponent()
+		Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainWindow))
 		richData = New RichTextBox()
 		btnSend = New Button()
 		btnChangeInfo = New Button()
@@ -83,6 +84,7 @@ Partial Class MainWindow
 		Controls.Add(btnChangeInfo)
 		Controls.Add(btnSend)
 		Controls.Add(richData)
+		Icon = CType(resources.GetObject("$this.Icon"), Icon)
 		Name = "MainWindow"
 		Text = "ClipSync"
 		ResumeLayout(False)

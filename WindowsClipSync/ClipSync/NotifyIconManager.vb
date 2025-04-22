@@ -7,7 +7,7 @@ Public Class NotifyIconManager
     Public Sub New(mainForm As MainWindow)
         Me.mainForm = mainForm
         notifyIcon = New NotifyIcon()
-        Using ms As New MemoryStream(My.Resources.Resources.LogoClipSync)
+        Using ms As New MemoryStream(My.Resources.Resources.LogoClipSync_NoBg)
             notifyIcon.Icon = New Icon(ms)
         End Using
         notifyIcon.Text = "ClipSync"
