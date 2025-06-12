@@ -12,6 +12,9 @@ Public Class ClipboardData
 	End Sub
 
 	Public Shared Sub writeClipboard(text As String)
+		If IsNothing(text) Or text = "" Then
+			Return
+		End If
 		setLatestData(text)
 
 		Dim staThread As New Thread(Sub()
